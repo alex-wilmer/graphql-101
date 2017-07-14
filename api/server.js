@@ -1,22 +1,45 @@
 var express = require('express')
 var graphqlHTTP = require('express-graphql')
 var { buildSchema } = require('graphql')
+var cors = require('cors')
+
+var data = require('./data')
 
 var schema = buildSchema(`
+  type User {
+    id: ID
+    name: String
+    age: Int
+  }
+
+  type Movie {
+    id: ID
+    title: String
+  }
+
   type Query {
-    hello: String
+    users(id: ID): [User]
+    movies: [Movie]
   }
 `)
 
-var root = { hello: () => 'Hello world!' }
+var resolutionMap = {
+  users: args => {
+    return args.id ? data.users.filter(user => user.id === args.id) : data.users
+  },
+  movies: () => data.movies
+}
 
 var app = express()
+app.use(cors())
+
 app.use(
   '/graphql',
   graphqlHTTP({
     schema: schema,
-    rootValue: root,
+    rootValue: resolutionMap,
     graphiql: true
   })
 )
+
 app.listen(4000, () => console.log('Now browse to localhost:4000/graphql'))

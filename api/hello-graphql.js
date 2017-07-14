@@ -6,8 +6,10 @@ var schema = buildSchema(`
   }
 `)
 
-var root = { hello: () => 'Hello world!' }
+var query = '{ hello }'
 
-graphql(schema, '{ hello }', root).then(response => {
+var resolutionMap = { hello: () => 'Hello world!' }
+
+graphql(schema, query, resolutionMap).then(response => {
   console.log(response)
 })
