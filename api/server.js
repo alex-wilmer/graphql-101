@@ -10,6 +10,7 @@ var schema = buildSchema(`
     id: ID
     name: String
     age: Int
+    favoriteMovies: [Movie]
   }
 
   type Movie {
@@ -25,7 +26,20 @@ var schema = buildSchema(`
 
 var resolutionMap = {
   users: args => {
-    return args.id ? data.users.filter(user => user.id === args.id) : data.users
+    var users = args.id
+      ? data.users.filter(user => user.id === args.id)
+      : data.users
+
+    users.forEach(user => {
+      var favoriteMovies = data.favoriteMovies.filter(
+        fm => fm.user_id === user.id
+      )
+      user.favoriteMovies = data.movies.filter(movie =>
+        favoriteMovies.find(fm => fm.movie_id === movie.id)
+      )
+    })
+
+    return users
   },
   movies: () => data.movies
 }
