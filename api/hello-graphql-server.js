@@ -3,12 +3,31 @@ var graphqlHTTP = require('express-graphql')
 var { buildSchema } = require('graphql')
 
 var schema = buildSchema(`
+  type Person {
+    id: ID
+    name: String!
+    age: Int
+  }
+
   type Query {
+    person(name: String): Person
     hello: String
+    three: Int
   }
 `)
 
-var resolutionMap = { hello: () => 'Hello world!' }
+var resolutionMap = {
+  hello: () => 'Hello world!',
+  three: () => 1 + 2,
+  person: args => {
+    return {
+      name: () => {
+        return 'alex ' + args.name
+      },
+      age: () => 31
+    }
+  }
+}
 
 var app = express()
 
@@ -21,4 +40,4 @@ app.use(
   })
 )
 
-app.listen(4000, () => console.log('Now browse to localhost:4000/graphql'))
+app.listen(4001, () => console.log('Now browse to localhost:4000/graphql'))

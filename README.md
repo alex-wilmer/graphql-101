@@ -1,5 +1,26 @@
 # graphql-101
 
+## Install:
+
+```
+npm run setup
+```
+
+Start graphql express server:
+
+```
+npm run api
+``
+
+Start front end React dev server:
+```
+npm run ui
+```
+
+<hr />
+
+## Why graphql?
+
 What:
 
 graphql is a "communication language", specified by Facebook to make client <-> server interaction more expressive and reliable vs the existing standard: REST.
@@ -42,3 +63,13 @@ graphql(schema, query, resolutionMap).then(result => console.log(result))
 
 > { data: { hello: 'Hello world!' } }
 ```
+
+Resources:
+
+- Docs: http://graphql.org/code/#javascript
+- graphcool, graphql as a service: https://www.graph.cool/
+
+Clients:
+
+- Apollo: http://dev.apollodata.com/
+- Relay: https://facebook.github.io/relay/
